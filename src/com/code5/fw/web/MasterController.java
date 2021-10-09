@@ -1,24 +1,28 @@
 package com.code5.fw.web;
 
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import com.code5.biz.welcome.Welcome;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 public class MasterController extends HttpServlet {
 
 
     @Override
-    protected void service(HttpServletRequest req, HttpServletResponse resp)
+    protected void service(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String name = req.getParameter("NAME");
-        String msg = "WELCOME = " + name;
+        Welcome welcome = new Welcome();
 
-        PrintWriter out = resp.getWriter();
-        out.println(msg);
+        String jspUrl = welcome.execute(request);
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher(jspUrl);
+        dispatcher.forward(request, response);
     }
 }
